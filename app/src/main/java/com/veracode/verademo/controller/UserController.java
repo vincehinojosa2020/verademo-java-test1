@@ -147,15 +147,20 @@ public class UserController {
 		}
 
 		Connection connect = null;
+		/* START BAD CODE */
 		Statement sqlStatement = null;
-
+		/* END BAD CODE */
+		/* START GOOD CODE
+		PreparedStatement sqlStatement = null;
+        /* END GOOD CODE */
 		try {
 			// Get the Database Connection
 			logger.info("Creating the Database connection");
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 
-			/* START EXAMPLE VULNERABILITY */
+
+			/* START BAD CODE */
 			// Execute the query
 			logger.info("Creating the Statement");
 			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
@@ -163,7 +168,19 @@ public class UserController {
 			sqlStatement = connect.createStatement();
 			logger.info("Execute the Statement");
 			ResultSet result = sqlStatement.executeQuery(sqlQuery);
-			/* END EXAMPLE VULNERABILITY */
+			/* END BAD CODE */
+			/* START GOOD CODE
+			String sqlQuery = "select * from users where username=? and password=?;";
+			logger.info("Preparing the PreparedStatement");
+			sqlStatement = connect.prepareStatement(sqlQuery);
+			logger.info("Setting parameters for the PreparedStatement");
+			sqlStatement.setString(1, username);
+			sqlStatement.setString(2, password);
+			logger.info("Executing the PreparedStatement");
+			ResultSet result = sqlStatement.executeQuery();
+			/* END GOOD CODE */
+
+
 
 			// Did we find exactly 1 user that matched?
 			if (result.first()) {
