@@ -2,7 +2,9 @@ name: Build and Scan
 
 on:
   workflow_dispatch:
-
+  schedule:
+  - cron: "0 22 * * 1,3,5"
+  
 jobs:
   Build:
     runs-on: [ubuntu-latest]
