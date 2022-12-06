@@ -1,10 +1,11 @@
-name: Build and Scan
+name: Checkout-Build-Artifact-Scan
 
 on:
   workflow_dispatch:
   schedule:
   - cron: "0 22 * * 1,3,5"
-  
+
+# Checkout, Build, Artifact
 jobs:
   Build:
     runs-on: [ubuntu-latest]
@@ -23,6 +24,8 @@ jobs:
         # Artifact name
           name: verademo.war
           path: app/target/verademo.war
+
+# Submit to Veracode for SAST and SCA scan
 
   security_scan_sast_sca:
     runs-on: ubuntu-latest
@@ -46,7 +49,9 @@ jobs:
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
         continue-on-error: true
-        
+
+# Synch Issues into GitHub Issues
+
   import-issues:
     runs-on: ubuntu-latest
     needs: security_scan_sast_sca
