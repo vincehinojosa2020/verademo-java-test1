@@ -7,7 +7,7 @@ on:
 
 # Checkout, Build, Artifact
 jobs:
-  Build:
+  Checkout_Build_Artifact:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
@@ -27,9 +27,9 @@ jobs:
 
 # Submit to Veracode for SAST and SCA scan
 
-  security_scan_sast_sca:
+  Security_Scan_Sast_Sca:
     runs-on: ubuntu-latest
-    needs: Build
+    needs: Checkout_Build_Artifact
     steps:
       - uses: actions/checkout@v2
       - name: get archive
@@ -43,7 +43,7 @@ jobs:
         with:
           appname: 'VeraDemo-Java-GitHub'
           createprofile: false
-          version: '${{ github.run_id }}'
+          version: '${{ github.run_id }}-'
           criticality: Medium
           filepath: 'verademo.war'
           vid: '${{ secrets.VERACODE_API_ID }}'
@@ -54,7 +54,7 @@ jobs:
 
   import-issues:
     runs-on: ubuntu-latest
-    needs: security_scan_sast_sca
+    needs: Security_Scan_Sast_Sca
     container: 
       image: veracode/api-signing:latest
     steps:
@@ -69,8 +69,18 @@ jobs:
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
           
-      - name: import flaws as issues
+          total_sca=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True" | jq -r '.page.total_elements')
+          echo TOTAL_SCA: ${total_sca}
+          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True&size=${total_sca}" > sca_flaws.json
+     
+      - name: Synch Security Issues to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: '/tmp/policy_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}     
+
+      - name: Synch Security Issues to GitHub Issues
+        uses: veracode/veracode-flaws-to-issues@v1
+        with:
+          scan-results-json: '/tmp/sca_flaws.json'
+          github-token: ${{ secrets.GH_TOKEN }}    
