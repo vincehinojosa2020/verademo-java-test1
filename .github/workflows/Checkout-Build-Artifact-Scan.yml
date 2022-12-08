@@ -37,7 +37,7 @@ jobs:
 
   Security-Scan-SAST-SCA:
     runs-on: ubuntu-latest
-    needs: Checkout-Build-Artifact
+    needs: Checkout-Build-Artifact-Dockerize
     steps:
       - uses: actions/checkout@v2
       - name: get archive
