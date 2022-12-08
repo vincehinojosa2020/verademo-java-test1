@@ -1,4 +1,4 @@
-name: Checkout-Build-Artifact-Scan
+name: Checkout-Build-Artifact-Dockerize-Scan
 
 on:
   workflow_dispatch:
@@ -25,7 +25,15 @@ jobs:
           name: verademo.war
           path: app/target/verademo.war
 
-# Submit to Veracode for SAST and SCA scan
+# Dockerize and Publish
+
+      - name: Pull Docker
+        run:  docker pull mariadb:10.6.2
+      
+      - name: Build Docker Image
+        run: docker build --no-cache -t verademo-java-github .
+
+# Submit Application Artifact to Veracode for SAST and SCA Scan
 
   Security-Scan-SAST-SCA:
     runs-on: ubuntu-latest
