@@ -52,7 +52,7 @@ jobs:
 
 # Synch Issues into GitHub Issues
 
-  Import-Issues:
+  Synch-Issues-to-GitHub:
     runs-on: ubuntu-latest
     needs: Security-Scan-SAST-SCA
     container: 
@@ -73,13 +73,13 @@ jobs:
           echo TOTAL_SCA: ${total_sca}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True&size=${total_sca}" > sca_flaws.json
      
-      - name: Synch Security Issues to GitHub Issues
+      - name: Synch SAST Security Issues to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: '/tmp/policy_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}     
 
-      - name: Synch Security Issues to GitHub Issues
+      - name: Synch SCA Security Issues to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: '/tmp/sca_flaws.json'
