@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: get archive
-        uses: actions/download-artifact@v2
-        with:
-          name: verademo.war
-          path: .
+
+      - name: Download Checkout-Build-Artifact Workflow Artifact
+        uses: qiwi-forks/action-download-artifact@v2
+        with: 
+         github_token: ${{secrets.GITHUB_TOKEN}}
+         workflow: 1-Checkout-Build-Artifact.yml
+         name: Verademo
+         skip_unpack: false
+        continue-on-error: false
+
       - name: Veracode Upload and Scan Action Step
         uses: veracode/veracode-uploadandscan-action@master
         id: upload_and_scan
