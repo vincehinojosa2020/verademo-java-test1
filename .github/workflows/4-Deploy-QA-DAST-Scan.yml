@@ -16,5 +16,5 @@ jobs:
 
       - name: Pull Docker
         run: |
-         docker run --rm -it -p 8080:8080 veracodedemolabs/verademo-java-github:latest
+         docker run -p 8080:8080 veracodedemolabs/verademo-java-github:latest
        
