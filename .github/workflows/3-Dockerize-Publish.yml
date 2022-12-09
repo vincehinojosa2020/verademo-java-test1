@@ -21,9 +21,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Pull Ubuntu MariaDB Docker Image Dependency
-      run: docker pull mariadb:10.6.2      
-
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v3.2.0
       with:
