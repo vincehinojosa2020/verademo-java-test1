@@ -1,4 +1,4 @@
-name: 1-Checkout-Build-Artifact
+name: 4-Deploy-QA-DAST-Scan
 
 on:
   workflow_dispatch:
@@ -8,15 +8,8 @@ on:
 # Run the Docker image for QA and DAST testing
 jobs:
   Checkout-Build-Artifact:
-    runs-on: self-hosted
+    runs-on: [self-hosted]
     steps:     
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-        # Artifact name
-          name: verademo.war
-          path: app/target/verademo.war
-      
       - name: Pull Docker
         run: |
          docker pull veracodedemolabs/verademo-java-github:latest
