@@ -24,3 +24,7 @@ jobs:
         # Artifact name
           name: verademo.war
           path: app/target/verademo.war
+      
+      - name: List folder contents for visual
+        run: |
+         ls -la
