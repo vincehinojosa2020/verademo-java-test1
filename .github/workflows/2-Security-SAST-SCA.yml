@@ -12,7 +12,6 @@ jobs:
   Security-Scan-SAST-SCA:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
 
       - name: Download Checkout-Build-Artifact Workflow Artifact
         uses: qiwi-forks/action-download-artifact@v2
@@ -20,10 +19,9 @@ jobs:
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
          name: verademo.war
-         skip_unpack: false
         continue-on-error: false
         
-      - name: List folder contents for visual 
+      - name: List folder contents for visual to confirm artifact file exists
         run: |
          ls -la
         
