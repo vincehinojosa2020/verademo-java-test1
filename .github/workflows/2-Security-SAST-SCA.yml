@@ -1,6 +1,6 @@
 # Submit Application Artifact to Veracode for SAST and SCA Scan
 
-name: Security-SAST-SCA
+name: 2-Security-SAST-SCA
 
 on:
   workflow_dispatch:
