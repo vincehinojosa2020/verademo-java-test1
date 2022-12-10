@@ -27,25 +27,21 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: veracode/api-signing:latest
-    steps:     
-
-      - name: List folder contents for visual
-        run: |
-         sudo mkdir VC
-         
+    steps:            
       - name: Download Checkout-Build-Artifact Workflow Artifact
         uses: qiwi-forks/action-download-artifact@v2
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
-         name: verademo.war
-         path: VC
+         name: VeracodeDASTConfig
+         path: /tmp/
         continue-on-error: false
         
-      - name: List folder contents for visual
+      - name: Make Veracode API keys availible for API call
         run: |
-         ls -la
-         
+         export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
+         export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
+          
       - name: Submit Veracode DAST Scan
         run: |
-         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < Veracode-DAST-Config.json
+         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < /tmp/Veracode-DAST-Config.json
