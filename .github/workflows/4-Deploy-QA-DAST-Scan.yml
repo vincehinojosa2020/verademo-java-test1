@@ -43,7 +43,7 @@ jobs:
          
       - name: Update DAST config file with uniuqe scan name
         run: |
-         cd/tmp
+         cd /tmp
          NOW=$(date +"%m-%d-%Y")
          sed -i 's/VeraDemo-Java-GitHub/VeraDemo-Java-GitHub-"$NOW"/g' vc-dast-config.json
          
