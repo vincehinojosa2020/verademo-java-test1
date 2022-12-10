@@ -36,16 +36,13 @@ jobs:
          name: Veracode-DAST-Config
          path: /tmp/
         continue-on-error: false
-        
-      - name: Make Veracode API keys availible for API call
-        run: |
-         export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
-         export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
-          
+                
       - name: Submit Veracode DAST Scan
         run: |
          ls -la /tmp
         
       - name: Submit Veracode DAST Scan
         run: |
+         export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
+         export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < /tmp/vc-dast-config.json
