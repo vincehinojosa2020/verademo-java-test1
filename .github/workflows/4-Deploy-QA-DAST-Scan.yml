@@ -20,12 +20,12 @@ jobs:
       
       - name: Terminate previous QA Docker image to run new version
         run: |
-         docker stop veracodedemolabs/verademo-java-github
+         docker stop verademo-java-github
         continue-on-error: true
         
       - name: Run Docker image
         run: |
-         docker run -d -p 8080:8080 veracodedemolabs/verademo-java-github:latest
+         docker run -d --name verademo-java-github -p 8080:8080 veracodedemolabs/verademo-java-github:latest
          
  # Run DAST Scan against QA server
   Submit-DAST-Scan:
