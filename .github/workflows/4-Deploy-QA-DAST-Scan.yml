@@ -28,6 +28,15 @@ jobs:
     container: 
       image: veracode/api-signing:latest
     steps:     
+
+      - name: List folder contents for visual
+        run: |
+         mkdir VC
+
+      - name: List folder contents for visual
+        run: |
+         sudo mkdir VC
+         
       - name: Download Checkout-Build-Artifact Workflow Artifact
         uses: qiwi-forks/action-download-artifact@v2
         with: 
