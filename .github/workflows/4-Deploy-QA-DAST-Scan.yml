@@ -33,7 +33,7 @@ jobs:
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
-         name: Veracode-DAST-Config
+         name: VeracodeDASTConfig
         continue-on-error: false
 
       - name: List folder contents for visual
