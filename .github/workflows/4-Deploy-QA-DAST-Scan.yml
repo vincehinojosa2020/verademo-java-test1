@@ -34,7 +34,7 @@ jobs:
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
          name: VeracodeDASTConfig
-        continue-on-error: false
+        continue-on-error: true
 
       - name: List folder contents for visual
         run: |
