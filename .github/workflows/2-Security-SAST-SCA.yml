@@ -1,18 +1,21 @@
-# Submit Application Artifact to Veracode for SAST and SCA Scan
-
 name: 2-Security-SAST-SCA
+
+# This Workflow will submit the application artifact to Veracode for SAST and SCA scan
+# It will run manually or automatically after 1-Checkout-Build-Artifact.yml completes.
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: "0 22 * * 1,3,5"
+  workflow_run:
+    workflows: ["1-Checkout-Build-Artifact"]
+    types:
+      - completed
 
-# Checkout, Build, Artifact
 jobs:
   Security-Scan-SAST-SCA:
     runs-on: ubuntu-latest
     steps:
 
+# Download the most recent build artifact from the 1-Checkout-Build-Artifact worfklow.
       - name: Download Checkout-Build-Artifact Workflow Artifact
         uses: qiwi-forks/action-download-artifact@v2
         with: 
@@ -20,11 +23,13 @@ jobs:
          workflow: 1-Checkout-Build-Artifact.yml
          name: verademo.war
         continue-on-error: false
-        
+
+# Listing the folder contents is very handy for troubleshooting      
       - name: List folder contents for visual to confirm artifact file exists
         run: |
          ls -la
-        
+
+# Use the UploadAndScan action to submit the artifact for scanning
       - name: Veracode Upload and Scan Action Step
         uses: veracode/veracode-uploadandscan-action@master
         id: upload_and_scan
@@ -38,15 +43,14 @@ jobs:
           vkey: '${{ secrets.VERACODE_API_KEY }}'
         continue-on-error: true
 
-# Synch Issues into GitHub Issues
-
+# Synch Issues into GitHub Issues.  This will synch the issues from the most recent completed SAST/SCA Policy scan.
+# This is fine for most, see more advanced workflow to get more instant feedback if needed.
   Synch-Issues-to-GitHub:
     runs-on: ubuntu-latest
-    needs: Security-Scan-SAST-SCA
     container: 
       image: veracode/api-signing:latest
     steps:
-      - name: get policy flaws
+      - name: Get SAST/SCA Policy flaws
         run: |
           cd /tmp
           export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
