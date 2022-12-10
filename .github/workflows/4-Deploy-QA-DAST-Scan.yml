@@ -28,8 +28,14 @@ jobs:
     container: 
       image: veracode/api-signing:latest
     steps:     
-      - uses: actions/checkout@v2
-
+      - name: Download Checkout-Build-Artifact Workflow Artifact
+        uses: qiwi-forks/action-download-artifact@v2
+        with: 
+         github_token: ${{secrets.GITHUB_TOKEN}}
+         workflow: 1-Checkout-Build-Artifact.yml
+         name: verademo.war
+        continue-on-error: false
+        
       - name: List folder contents for visual
         run: |
          ls -la
