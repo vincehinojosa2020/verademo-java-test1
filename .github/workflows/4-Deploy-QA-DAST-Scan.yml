@@ -33,7 +33,7 @@ jobs:
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
-         name: VeracodeDASTConfig
+         name: Veracode-DAST-Config
          path: /tmp/
         continue-on-error: false
         
@@ -48,8 +48,4 @@ jobs:
         
       - name: Submit Veracode DAST Scan
         run: |
-         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" \
-         category=tools \
-         search[type]=keyword \
-         search[keywords][]=APIs \
-         search[keywords][]=CLI
+         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" @Veracode-DAST-Config.json
