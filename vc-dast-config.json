@@ -27,7 +27,7 @@
   ],
   "schedule": {
     "duration": {
-      "length": 5,
+      "length": 30,
       "unit": "MINUTE"
     },
     "scheduled": true,
