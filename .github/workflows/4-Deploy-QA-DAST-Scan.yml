@@ -48,4 +48,4 @@ jobs:
         
       - name: Submit Veracode DAST Scan
         run: |
-         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" @Veracode-DAST-Config.json
+         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" @vc-dast-config.json
