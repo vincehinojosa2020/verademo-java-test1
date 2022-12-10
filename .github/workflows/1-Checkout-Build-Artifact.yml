@@ -2,7 +2,9 @@ name: 1-Checkout-Build-Artifact
 
 # This workflow will checkout the code, build the WAR file, and create an artifact for use in following workflows.
 on:
+  # Enables manual runs
   workflow_dispatch:
+  # Runs "Every Sunday" (see https://crontab.guru)
   schedule:
   - cron: "0 22 * * 1,3,5"
 
