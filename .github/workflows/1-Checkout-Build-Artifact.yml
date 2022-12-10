@@ -29,8 +29,8 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
         # Artifact name
-          name: VeracodeDASTConfig
-          path: VeracodeDASTConfig.txt
+          name: Veracode-DAST-Config
+          path: Veracode-DAST-Config.json
       
       - name: List folder contents for visual
         run: |
