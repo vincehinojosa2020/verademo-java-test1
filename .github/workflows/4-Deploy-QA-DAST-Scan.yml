@@ -17,7 +17,11 @@ jobs:
       - name: Pull Docker Image to QA Web Server
         run: |
          docker pull veracodedemolabs/verademo-java-github:latest
-
+      
+      - name: Terminate previous QA Docker image to run new version
+        run: |
+         docker stop veracodedemolabs/verademo-java-github
+         
       - name: Run Docker image
         run: |
          docker run -d -p 8080:8080 veracodedemolabs/verademo-java-github:latest
