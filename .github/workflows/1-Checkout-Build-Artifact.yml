@@ -24,6 +24,13 @@ jobs:
         # Artifact name
           name: verademo.war
           path: app/target/verademo.war
+          
+      - name: Upload DAST Config for Later Use
+        uses: actions/upload-artifact@v3.1.0
+        with:
+        # Artifact name
+          name: Veracode-DAST-Config.json
+          path: Veracode-DAST-Config.json
       
       - name: List folder contents for visual
         run: |
