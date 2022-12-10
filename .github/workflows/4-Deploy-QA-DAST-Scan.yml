@@ -28,6 +28,7 @@ jobs:
     container: 
       image: veracode/api-signing:latest
     steps:     
+      - uses: actions/checkout@v2
       - name: Pull Docker
         run: |
          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < Veracode-DAST-Config.json
