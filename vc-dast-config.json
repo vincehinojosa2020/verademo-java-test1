@@ -4,7 +4,7 @@
     {
       "scan_config_request": {
         "target_url": {
-          "url": "http://verademo-java-github.qa"
+          "url": "http://verademo-java-github.qa:8080"
         }
       }
     }
