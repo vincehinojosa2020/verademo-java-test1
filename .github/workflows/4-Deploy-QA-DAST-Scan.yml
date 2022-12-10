@@ -28,13 +28,7 @@ jobs:
     container: 
       image: veracode/api-signing:latest
     steps:     
-      - name: Download Veracode-DAST-Config artifact
-        uses: qiwi-forks/action-download-artifact@v2
-        with: 
-         github_token: ${{secrets.GITHUB_TOKEN}}
-         workflow: 1-Checkout-Build-Artifact.yml
-         name: VeracodeDASTConfig
-        continue-on-error: true
+      - uses: actions/checkout@v2
 
       - name: List folder contents for visual
         run: |
