@@ -14,18 +14,17 @@ jobs:
   Deploy-Docker-Image-QA-Server:
     runs-on: [self-hosted]
     steps:     
-      - name: Pull Docker
+      - name: Pull Docker Image to QA Web Server
         run: |
          docker pull veracodedemolabs/verademo-java-github:latest
 
-      - name: Pull Docker
+      - name: Run Docker image
         run: |
          docker run -p 8080:8080 veracodedemolabs/verademo-java-github:latest
          
  # Run DAST Scan against QA server
   Submit-DAST-Scan:
     runs-on: ubuntu-latest
-    needs: Deploy-Docker-Image-QA-Server
     container: 
       image: veracode/api-signing:latest
     steps:     
