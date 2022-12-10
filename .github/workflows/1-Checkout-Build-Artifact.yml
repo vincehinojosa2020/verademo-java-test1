@@ -1,37 +1,45 @@
 name: 1-Checkout-Build-Artifact
 
+# This workflow will checkout the code, build the WAR file, and create an artifact for use in following workflows.
 on:
   workflow_dispatch:
   schedule:
   - cron: "0 22 * * 1,3,5"
 
-# Checkout, Build, Artifact
 jobs:
   Checkout-Build-Artifact:
     runs-on: [ubuntu-latest]
     steps:
+    # Checkout code
       - uses: actions/checkout@v2
+    
+    # Setup Java
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
+    
+    # Build with Maven          
       - name: Build with Maven
         working-directory: ./app/
         run: mvn clean install
-        
+    
+    # Upload artifact for other worfklows        
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
         # Artifact name
           name: verademo.war
           path: app/target/verademo.war
-          
+    
+    # Artifact the Veracode DAST config to use for QA testing      
       - name: Upload DAST Config for Later Use
         uses: actions/upload-artifact@v3.1.0
         with:
         # Artifact name
           name: Veracode-DAST-Config
           path: vc-dast-config.json
-      
-      - name: List folder contents for visual
+    
+    # Listing the folder contents is very handy for troubleshooting
+      - name: List folder contents for visual confirmation
         run: |
          ls -la
