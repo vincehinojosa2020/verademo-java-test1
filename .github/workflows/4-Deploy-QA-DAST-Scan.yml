@@ -31,10 +31,6 @@ jobs:
 
       - name: List folder contents for visual
         run: |
-         mkdir VC
-
-      - name: List folder contents for visual
-        run: |
          sudo mkdir VC
          
       - name: Download Checkout-Build-Artifact Workflow Artifact
