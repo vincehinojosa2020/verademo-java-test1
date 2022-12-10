@@ -9,7 +9,7 @@ on:
     types:
       - completed
       
-# Run the Docker Image for QA and DAST Testing
+# Run the Docker image for QA and DAST testing
 jobs:
   Deploy-Docker-Image-QA-Server:
     runs-on: [self-hosted]
@@ -28,15 +28,18 @@ jobs:
     container: 
       image: veracode/api-signing:latest
     steps:     
-      - name: Download Veracode-DAST-Config Artifact
+      - name: Download Veracode-DAST-Config artifact
         uses: qiwi-forks/action-download-artifact@v2
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
          name: Veracode-DAST-Config.json
-        continue-on-error: false
-      
-      - name: Pull Docker
+        continue-on-error: true
+
+      - name: List folder contents for visual
+        run: |
+         ls -la
+         
+      - name: Submit Veracode DAST Scan
         run: |
          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < Veracode-DAST-Config.json
-       
