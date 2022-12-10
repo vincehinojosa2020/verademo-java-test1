@@ -4,10 +4,15 @@
     {
       "scan_config_request": {
         "target_url": {
-          "url": "http://www.example.com"
+          "url": "http://verademo-java-github.qa"
         }
       }
     }
+    "custom_hosts": [
+      {
+        "host_name": "verademo-java-github.qa",
+        "ip_address": "98.214.52.114"
+      }
   ],
   "schedule": {
     "duration": {
