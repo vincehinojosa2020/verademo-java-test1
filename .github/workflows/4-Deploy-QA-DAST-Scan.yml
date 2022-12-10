@@ -53,7 +53,7 @@ jobs:
          NOW=$(date +"%m-%d-%Y-%T")
          sed -i 's/VeraDemo-Java-GitHub/VeraDemo-Java-GitHub-'${NOW}'/g' vc-dast-config.json
          
-      - name: Update DAST config file with uniuqe scan name
+      - name: Display DAST config file with uniuqe scan name
         run: |
           cat /tmp/vc-dast-config.json
       
