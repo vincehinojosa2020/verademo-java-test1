@@ -21,7 +21,8 @@ jobs:
       - name: Terminate previous QA Docker image to run new version
         run: |
          docker stop veracodedemolabs/verademo-java-github
-         
+        continue-on-error: true
+        
       - name: Run Docker image
         run: |
          docker run -d -p 8080:8080 veracodedemolabs/verademo-java-github:latest
