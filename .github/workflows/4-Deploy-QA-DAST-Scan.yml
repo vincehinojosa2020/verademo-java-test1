@@ -45,12 +45,23 @@ jobs:
         run: |
          cd /tmp
          NOW=$(date +"%m-%d-%Y")
-         sed -i 's/VeraDemo-Java-GitHub/VeraDemo-Java-GitHub-${NOW}/g' vc-dast-config.json
+         sed -i 's/VeraDemo-Java-GitHub/VeraDemo-Java-GitHub-'${NOW}'/g' vc-dast-config.json
          
       - name: Update DAST config file with uniuqe scan name
         run: |
           cat /tmp/vc-dast-config.json
        
+      - name: Update DAST config file with uniuqe scan name
+        run: |
+         cd /tmp
+         NOW=$(date +"%m-%d-%Y")
+         sed -i 's/VeraDemo-Java-GitHub/VeraDemo-Java-GitHub-"${NOW}"/g' vc-dast-config.json 
+      
+      - name: Update DAST config file with uniuqe scan name
+        run: |
+          cat /tmp/vc-dast-config.json
+      
+      
       - name: Submit Veracode DAST Scan
         run: |
          export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
