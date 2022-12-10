@@ -11,7 +11,7 @@ on:
       
 # Run the Docker image for QA and DAST testing
 jobs:
-  Checkout-Build-Artifact:
+  Deploy-Docker-Image-QA-Server:
     runs-on: [self-hosted]
     steps:     
       - name: Pull Docker
