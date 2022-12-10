@@ -1,5 +1,5 @@
 {
-  "name": "VeraDemo-Java-GitHub '${{ github.run_id }}-'",
+  "name": "VeraDemo-Java-GitHub",
   "scans": [
     {
       "scan_config_request": {
@@ -12,7 +12,7 @@
   "schedule": {
     "duration": {
       "length": 10,
-      "unit": "MINUTES"
+      "unit": "MINUTE"
     },
     "scheduled": true,
     "now": true
