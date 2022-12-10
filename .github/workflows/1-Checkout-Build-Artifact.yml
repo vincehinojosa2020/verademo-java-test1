@@ -30,7 +30,7 @@ jobs:
         with:
         # Artifact name
           name: Veracode-DAST-Config
-          path: Veracode-DAST-Config.json
+          path: vc-dast-config.json
       
       - name: List folder contents for visual
         run: |
