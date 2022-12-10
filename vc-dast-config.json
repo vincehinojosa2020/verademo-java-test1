@@ -1,5 +1,21 @@
 {
   "name": "VeraDemo-Java-GitHub",
+  "scan_setting": {
+    "custom_hosts": [
+      {
+        "host_name": "verademo-java-github.qa",
+        "ip_address": "98.214.52.114"
+      }
+    ],
+    "max_browsers": 10
+  },
+  "scanner_variables": [
+    {
+      "reference_key": "string",
+      "value": "string",
+      "description": "string"
+    }
+  ], 
   "scans": [
     {
       "scan_config_request": {
@@ -8,15 +24,10 @@
         }
       }
     }
-    "custom_hosts": [
-      {
-        "host_name": "verademo-java-github.qa",
-        "ip_address": "98.214.52.114"
-      }
   ],
   "schedule": {
     "duration": {
-      "length": 10,
+      "length": 5,
       "unit": "MINUTE"
     },
     "scheduled": true,
