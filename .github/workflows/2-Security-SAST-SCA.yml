@@ -1,4 +1,4 @@
-name: 2-Security-SAST-SCA
+name: 3-Security-SAST-SCA
 
 # This Workflow will submit the application artifact to Veracode for SAST and SCA scan
 # It will run manually or automatically after 1-Checkout-Build-Artifact.yml completes.
