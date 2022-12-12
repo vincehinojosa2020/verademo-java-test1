@@ -61,9 +61,9 @@ jobs:
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
           
-          total_sca=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True" | jq -r '.page.total_elements')
+          total_sca=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4" | jq -r '.page.total_elements')
           echo TOTAL_SCA: ${total_sca}
-          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True&size=${total_sca}" > sca_flaws.json
+          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4&size=${total_sca}" > sca_flaws.json
      
       - name: Synch SAST Security Issues to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
