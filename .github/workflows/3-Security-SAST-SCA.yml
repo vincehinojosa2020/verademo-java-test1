@@ -36,7 +36,7 @@ jobs:
         with:
           appname: 'VeraDemo-Java-GitHub'
           createprofile: false
-          version: '${{ github.run_id }}-'
+          version: '${{ github.run_id }}'
           criticality: Medium
           filepath: 'verademo.war'
           vid: '${{ secrets.VERACODE_API_ID }}'
