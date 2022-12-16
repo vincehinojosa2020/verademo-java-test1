@@ -21,7 +21,7 @@ jobs:
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
-         name: verademo
+         name: verademo_java
         continue-on-error: false
 
 # Listing the folder contents is very handy for troubleshooting      
