@@ -37,6 +37,8 @@ jobs:
         push: true
         tags: veracodedemolabs/verademo-java-github:latest
 
+# Running Software Composition Analysis against the local repo and the container
+
     - name: SCA Agent Scan of Repo
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
