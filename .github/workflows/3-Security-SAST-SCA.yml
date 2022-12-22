@@ -76,3 +76,20 @@ jobs:
         with:
           scan-results-json: '/tmp/sca_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}    
+
+      - name: Get SBOM in CycloneDX format and attach as artifact
+        run: |
+          workspaceID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces?filter[workspace]=GitHubp | jq -r '._embedded.workspaces[0].id')
+          echo workspaceID=${workspaceID}
+          projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-application | jq -r '._embedded.projects[0].id')
+          http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-App-SBOM-CycloneDX-${{ github.run_id }}.json
+         
+          projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-container | jq -r '._embedded.projects[0].id')
+          echo backend projID=${projectID}
+          http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-Container-SBOM-CycloneDX-${{ github.run_id }}.json
+
+
+      - name: Upload CycloneDX SBOM for app and container
+        uses: actions/upload-artifact@v3.1.1
+        with:
+           name: "*.json"
