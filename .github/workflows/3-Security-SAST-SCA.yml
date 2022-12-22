@@ -79,7 +79,7 @@ jobs:
 
       - name: Get SBOM in CycloneDX format and attach as artifact
         run: |
-          workspaceID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces?filter[workspace]=GitHubp | jq -r '._embedded.workspaces[0].id')
+          workspaceID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces?filter[workspace]=GitHub | jq -r '._embedded.workspaces[0].id')
           echo workspaceID=${workspaceID}
           projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-application | jq -r '._embedded.projects[0].id')
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-App-SBOM-CycloneDX-${{ github.run_id }}.json
