@@ -96,7 +96,7 @@ jobs:
         run: |
          ls -la
          pwd
-         cd/tmp
+         cd /tmp
          ls -la
          
       - name: Upload CycloneDX SBOM for app and container
