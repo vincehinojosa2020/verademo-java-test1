@@ -95,9 +95,12 @@ jobs:
       - name: List folder contents for visual to confirm artifact file exists
         run: |
          ls -la
-
+         pwd
+         cd/tmp
+         ls -la
+         
       - name: Upload CycloneDX SBOM for app and container
         uses: actions/upload-artifact@v3.1.1
         with:
            name: SBOM-VeraDemoJava-${{ github.run_id }}
-           path: "./tmp/*.json"          
+           path: "../tmp/*.json"          
