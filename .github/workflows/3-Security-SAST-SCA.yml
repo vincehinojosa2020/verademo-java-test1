@@ -61,23 +61,27 @@ jobs:
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
           
-          total_sca=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4" | jq -r '.page.total_elements')
+          TOTAL_SCA=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4" | jq -r '.page.total_elements')
           echo TOTAL_SCA: ${total_sca}
-          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4&size=${total_sca}" > sca_flaws.json
+          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4&size=${total_sca}" > sca_issues.json
+          
+          TOTAL_DAST=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DAST&violates_policy=True" | jq -r '.page.total_elements')
+          echo TOTAL_DAST: ${total_dast}
+          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DAST&violates_policy=True&size=${total_sca}" > dast_flaws.json
      
-      - name: Synch SAST Security Issues to GitHub Issues
+      - name: Synch SAST flaws to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: '/tmp/policy_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}     
 
-      - name: Synch SCA Security Issues to GitHub Issues
+      - name: Synch DAST vulnerabilities to GitHub Issues  (SCA issue synch in seperate workflow)
         uses: veracode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: '/tmp/sca_flaws.json'
+          scan-results-json: '/tmp/dast_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}    
 
-      - name: Get SBOM in CycloneDX format and attach as artifact
+      - name: Get application SBOM in CycloneDX format and attach as artifact
         run: |
           cd /tmp
           export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
@@ -87,15 +91,9 @@ jobs:
           projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-application | jq -r '._embedded.projects[0].id')
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-App-SBOM-CycloneDX-${{ github.run_id }}.json
          
-          projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-container | jq -r '._embedded.projects[0].id')
-          echo container projID=${projectID}
-          http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-Container-SBOM-CycloneDX-${{ github.run_id }}.json
-
 # Listing the folder contents is very handy for troubleshooting      
       - name: List folder contents for visual to confirm artifact file exists
         run: |
-         ls -la
-         pwd
          cd /tmp
          ls -la
          
