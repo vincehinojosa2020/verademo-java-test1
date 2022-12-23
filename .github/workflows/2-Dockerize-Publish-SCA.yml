@@ -49,14 +49,15 @@ jobs:
         # A path within the repository where the build definition starts
         path: app
         # Run the SRCCLR with the `--allow-dirty` option
-        allow-dirty: true
-  
-    - name: SCA Agent Scan of Repo
-      env: 
-        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan app
-      
+        allow-dirty: true 
+    
     - name: SCA Container Scan
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan --image veracodedemolabs/verademo-java-github:latest
+      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan --image veracodedemolabs/verademo-java-github:latest --json=SCA-Container-Results-${{ github.run_id }}.json
+      
+    - name: Upload CycloneDX SBOM for app and container, and upload flaws found in this version.
+      uses: actions/upload-artifact@v3.1.1
+      with:
+         name: SCA-Issues-VeraDemoJava-app-container-${{ github.run_id }}
+         path: "*.json"       
