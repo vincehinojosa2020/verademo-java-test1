@@ -103,4 +103,4 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
            name: SBOM-VeraDemoJava-${{ github.run_id }}
-           path: "../tmp/*.json"          
+           path: "/tmp/"          
