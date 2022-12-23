@@ -91,9 +91,13 @@ jobs:
           echo container projID=${projectID}
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-Container-SBOM-CycloneDX-${{ github.run_id }}.json
 
+# Listing the folder contents is very handy for troubleshooting      
+      - name: List folder contents for visual to confirm artifact file exists
+        run: |
+         ls -la
 
       - name: Upload CycloneDX SBOM for app and container
         uses: actions/upload-artifact@v3.1.1
         with:
            name: SBOM-VeraDemoJava-${{ github.run_id }}
-           path: "*.json"          
+           path: "./tmp/*.json"          
