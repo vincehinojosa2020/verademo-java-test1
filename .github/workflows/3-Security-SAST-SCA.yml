@@ -99,8 +99,8 @@ jobs:
          cd /tmp
          ls -la
          
-      - name: Upload CycloneDX SBOM for app and container
+      - name: Upload CycloneDX SBOM for app and container, and upload flaws found in this version.
         uses: actions/upload-artifact@v3.1.1
         with:
-           name: SBOM-VeraDemoJava-${{ github.run_id }}
+           name: SBOM-Issues-VeraDemoJava-${{ github.run_id }}
            path: "/tmp/*.json"          
