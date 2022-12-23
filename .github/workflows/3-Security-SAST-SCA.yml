@@ -95,4 +95,5 @@ jobs:
       - name: Upload CycloneDX SBOM for app and container
         uses: actions/upload-artifact@v3.1.1
         with:
-           name: "./*.json"
+           name: SBOM-VeraDemoJava-${{ github.run_id }}
+           path: "*.json"          
