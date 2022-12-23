@@ -13,7 +13,7 @@ on:
 
 jobs:
 
-  Dockerize-Publish:
+  Dockerize-Publish-SCA:
 
     runs-on: ubuntu-latest
 
@@ -56,7 +56,7 @@ jobs:
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
       run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan --image veracodedemolabs/verademo-java-github:latest --json=SCA-Container-Results-${{ github.run_id }}.json
       
-    - name: Upload CycloneDX SBOM for app and container, and upload flaws found in this version.
+    - name: Upload artifact with SCA app and container issues for this build
       uses: actions/upload-artifact@v3.1.1
       with:
          name: SCA-Issues-VeraDemoJava-app-container-${{ github.run_id }}
