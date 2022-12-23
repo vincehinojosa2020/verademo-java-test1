@@ -1,7 +1,7 @@
-name: 2-Build & Publish Docker Image / SCA Agent
+name: 2-Build-Publish-Docker-SCA-Agent
 
 # This step will build and publish the Docker image to https://hub.docker.com/repository/docker/veracodedemolabs/verademo-java-github
-# It then runs a SCA Agent scan against the repo and the container.
+# It then runs a SCA Agent scan against the repo and the container and imports into GitHub issues.
 # It will run manually or automatically after 1-Checkout-Build-Artifact.yml completes.
 
 on:
