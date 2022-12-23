@@ -88,7 +88,7 @@ jobs:
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-App-SBOM-CycloneDX-${{ github.run_id }}.json
          
           projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-container | jq -r '._embedded.projects[0].id')
-          echo backend projID=${projectID}
+          echo container projID=${projectID}
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-Container-SBOM-CycloneDX-${{ github.run_id }}.json
 
 
