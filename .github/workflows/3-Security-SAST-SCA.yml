@@ -81,24 +81,22 @@ jobs:
           scan-results-json: '/tmp/dast_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}    
 
-      - name: Get application SBOM in CycloneDX format and attach as artifact
+  Container-Inspection-SBOM:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Veracode Container Scanner
         run: |
-          cd /tmp
+          mkdir tmp
+          cd tmp
+          curl -fsS https://tools.veracode.com/veracode-cli/install | sh
           export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
           export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
-          workspaceID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces?filter[workspace]=GitHub | jq -r '._embedded.workspaces[0].id')
-          echo workspaceID=${workspaceID}
-          projectID=$(http --auth-type veracode_hmac GET https://api.veracode.com/srcclr/v3/workspaces/${workspaceID}/projects?search=verademo-java-application | jq -r '._embedded.projects[0].id')
-          http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/${projectID}/cyclonedx?type=agent > VeraDemoJava-App-SBOM-CycloneDX-${{ github.run_id }}.json
-         
-# Listing the folder contents is very handy for troubleshooting      
-      - name: List folder contents for visual to confirm artifact file exists
-        run: |
-         cd /tmp
-         ls -la
-         
-      - name: Upload CycloneDX SBOM for app and container, and upload flaws found in this version.
-        uses: actions/upload-artifact@v3.1.1
+          ls -la
+          ./veracode scan --source /home/runner/work/verademo-java/verademo-java --type directory --format table -o IssuesSource.txt
+          ./veracode sbom --source veracodedemolabs/verademo-java-github:latest --type image --format table -o SBOM.txt
+# Store security artifacts
+      - name: Upload security artifacts
+        uses: actions/upload-artifact@v3.1.0
         with:
-           name: SBOM-Issues-VeraDemoJava-${{ github.run_id }}
-           path: "/tmp/*.json"          
+          name: SecurityArtifacts
+          path: ./tmp/*.txt     
