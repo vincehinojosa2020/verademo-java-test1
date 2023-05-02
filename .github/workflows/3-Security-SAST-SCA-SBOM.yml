@@ -60,14 +60,10 @@ jobs:
           total_flaws=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True" | jq -r '.page.total_elements')
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
-          
-          TOTAL_SCA=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4" | jq -r '.page.total_elements')
-          echo TOTAL_SCA: ${total_sca}
-          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&severity_gte=4&size=${total_sca}" > sca_issues.json
-          
-          TOTAL_DAST=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DAST&violates_policy=True" | jq -r '.page.total_elements')
-          echo TOTAL_DAST: ${total_dast}
-          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DAST&violates_policy=True&size=${total_sca}" > dast_flaws.json
+
+          TOTAL_DAST=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DYNAMIC&violates_policy=True" | jq -r '.page.total_elements')
+          echo TOTAL_DAST: ${total_vulns}
+          http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=DYNAMIC&violates_policy=True&size=${total_vulns}" > dast_vulns.json
      
       - name: Synch SAST flaws to GitHub Issues
         uses: veracode/veracode-flaws-to-issues@v1
@@ -78,7 +74,7 @@ jobs:
       - name: Synch DAST vulnerabilities to GitHub Issues  (SCA issue synch in seperate workflow)
         uses: veracode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: '/tmp/dast_flaws.json'
+          scan-results-json: '/tmp/dast_vulns.json'
           github-token: ${{ secrets.GH_TOKEN }}    
 
 # Veracode CLI against the container
