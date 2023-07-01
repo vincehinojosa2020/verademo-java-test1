@@ -1,6 +1,6 @@
 name: .5-SAST-Check-Pull-Request-or-Branch
 
-# This workflow will checkout the code, build the DotNet app, create an artifact from the BIN folder, and scan with the Veracode Static Pipeline Scanner.
+# This workflow will checkout the code, build the app, and scan with the Veracode Static Pipeline Scanner.
 on:
   # Enables manual runs
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
          java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}"
          --file app/target/verademo.war
          --summary_output true
-         #--baseline_file vc-pipeline-scanner-baseline.json
+         --baseline_file vc-pipeline-scanner-baseline.json
          --project_name VeraDemo-Java-GitHub
 
 # Artifact the results for later use
