@@ -1,4 +1,4 @@
-name: .5-Check-Pull-Request-Branch
+name: .5-SAST-Check-Pull-Request-or-Branch
 
 # This workflow will checkout the code, build the DotNet app, create an artifact from the BIN folder, and scan with the Veracode Static Pipeline Scanner.
 on:
@@ -9,7 +9,7 @@ on:
   - cron: "4 5 * * *"
 
 jobs:
-  Checkout-Build-Artifact:
+  SAST-Check-Pull-Request-or-Branch:
     runs-on: [ubuntu-latest]
     steps:
    
